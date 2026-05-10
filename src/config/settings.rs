@@ -39,8 +39,8 @@ impl Settings {
         Ok(Self {
             database_url: env::var("DATABASE_URL")
                 .context("DATABASE_URL is not set. Please configure it in your .env file")?,
-            database_max_connections: env::var("DATABASE_MAX_CONNECTIONS").ok().and_then(|v| v.parse().ok()).unwrap_or(10),
-            database_min_connections: env::var("DATABASE_MIN_CONNECTIONS").ok().and_then(|v| v.parse().ok()).unwrap_or(2),
+            database_max_connections: env::var("DATABASE_MAX_CONNECTIONS").ok().and_then(|v| v.parse().ok()).unwrap_or(5),
+            database_min_connections: env::var("DATABASE_MIN_CONNECTIONS").ok().and_then(|v| v.parse().ok()).unwrap_or(1),
             database_connect_timeout_seconds: env::var("DATABASE_CONNECT_TIMEOUT_SECONDS").ok().and_then(|v| v.parse().ok()).unwrap_or(10),
             redis_url: env::var("REDIS_URL").unwrap_or_else(|_| "redis://localhost:6379".to_string()),
             redis_max_connections: env::var("REDIS_MAX_CONNECTIONS").ok().and_then(|v| v.parse().ok()).unwrap_or(20),

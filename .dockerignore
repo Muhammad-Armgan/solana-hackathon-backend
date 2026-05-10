@@ -1,0 +1,10 @@
+target/
+.env
+.env.local
+*.env
+**/*.env
+.git/
+.gitignore
+README.md
+tests/
+scripts/

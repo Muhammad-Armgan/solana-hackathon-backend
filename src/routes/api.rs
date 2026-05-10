@@ -1,10 +1,16 @@
-use axum::{middleware::from_fn_with_state, routing::{get, post}, Router};
+use axum::{middleware::from_fn_with_state, routing::{get, post}, Json, Router};
+use serde_json::{json, Value};
 
 use crate::{
     handlers::{auth_handler, paper_handler, quiz_handler, solana_handler, token_handler, upload_handler},
     middleware::{auth::require_auth_middleware, rate_limit::endpoint_rate_limit_middleware},
     state::SharedState,
 };
+
+/// Simple health check — no auth, no DB. Used by Railway's health check probe.
+async fn health() -> Json<Value> {
+    Json(json!({ "status": "ok" }))
+}
 
 pub fn build_api_router(state: SharedState) -> Router {
     let protected = Router::new()
@@ -33,6 +39,7 @@ pub fn build_api_router(state: SharedState) -> Router {
         .route_layer(from_fn_with_state(state.clone(), require_auth_middleware));
 
     Router::new()
+        .route("/health", get(health))          // public — no auth, used by Railway
         .route("/api/auth/signup", post(auth_handler::signup))
         .route("/api/auth/login", post(auth_handler::login))
         .merge(protected)

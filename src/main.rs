@@ -98,8 +98,12 @@ async fn main() -> anyhow::Result<()> {
         .layer(build_cors(&settings))
         .layer(build_trace());
 
-    let listener = TcpListener::bind("0.0.0.0:3000").await?;
-    tracing::info!("backend-rust listening on http://0.0.0.0:3000");
+    let listener = TcpListener::bind(format!(
+        "0.0.0.0:{}",
+        std::env::var("PORT").unwrap_or_else(|_| "3000".to_string())
+    ))
+    .await?;
+    tracing::info!("backend-rust listening on port {}", listener.local_addr()?.port());
     axum::serve(listener, app).await?;
     Ok(())
 }
