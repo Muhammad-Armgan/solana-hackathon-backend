@@ -1,0 +1,8 @@
+[phases.setup]
+aptPkgs = ["pkg-config", "libssl-dev", "clang", "llvm", "libudev-dev"]
+
+[phases.build]
+cmds = ["cargo build --release --bin backend-rust"]
+
+[start]
+cmd = "./target/release/backend-rust"

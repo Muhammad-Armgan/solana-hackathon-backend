@@ -1,4 +1,4 @@
-FROM rust:1.82-bookworm AS builder
+FROM rust:nightly-bookworm AS builder
 
 WORKDIR /app
 
@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY Cargo.toml Cargo.lock ./
-RUN cargo fetch
+RUN cargo fetch --locked
 
 COPY src ./src
 COPY migrations ./migrations
 
-RUN cargo build --release --bin backend-rust
+RUN cargo build --release --locked --bin backend-rust
 
 FROM debian:bookworm-slim AS runtime
 
