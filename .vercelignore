@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+.env
+.env.*
+README.md
+tests/
+scripts/
+Dockerfile
+.dockerignore
